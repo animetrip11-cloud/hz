@@ -1,0 +1,6 @@
+{
+  "appId": "app.folio.reader",
+  "appName": "Folio",
+  "webDir": "dist",
+  "android": { "backgroundColor": "#f7f6f2" }
+}
