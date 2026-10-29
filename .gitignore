@@ -5,3 +5,7 @@ local.properties
 *.iml
 .idea/
 .cxx/
+*.jks
+*.keystore
+keystore.properties
+signing.properties

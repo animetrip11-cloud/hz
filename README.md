@@ -10,7 +10,7 @@
 
 ## Обновление и хранение
 
-Установите APK **поверх** существующего приложения. Не удаляйте KOMA и не очищайте её данные: это уничтожит локальную библиотеку. Application ID и сертификат debug-подписи сохранены; миграция Room 1 → 2 проверена отдельным тестом.
+Для debug-сборок: установите APK **поверх** существующего debug-приложения. Переход на release с новым ключом требует экспорта резервной копии и переустановки — см. [RUSTORE_RELEASE.md](docs/RUSTORE_RELEASE.md). Не удаляйте KOMA и не очищайте её данные: это уничтожит локальную библиотеку. Application ID и сертификат debug-подписи сохранены; миграция Room 1 → 2 проверена отдельным тестом.
 
 Ранее скопированные гигабайты не исчезнут просто от установки обновления: сначала нужно подтвердить доступ к оригиналам.
 
@@ -59,7 +59,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 adb shell am start -n dev.koma.reader/.MainActivity
 ```
 
-Готовый APK: `downloads/KOMA-debug.apk`, SHA-256 рядом. Исходники без кэшей/toolchain: `downloads/KOMA-source.zip`. Application ID: `dev.koma.reader`; отображаемая версия 1.0.0, внутренний versionCode 3. Это debug-сборка, ключ публикации не настроен.
+Готовый APK: `downloads/KOMA-debug.apk`, SHA-256 рядом. Исходники без кэшей/toolchain: `downloads/KOMA-source.zip`. Release для RuStore: `downloads/KOMA-release.apk`, подписан отдельным постоянным RSA-3072 ключом. Application ID: `dev.koma.reader`; отображаемая версия 1.0.0, внутренний versionCode 4. Подготовка и обновления: [RUSTORE_RELEASE.md](docs/RUSTORE_RELEASE.md). Ключ и зашифрованная резервная копия хранятся вне репозитория; безопасную передачу владельцу необходимо завершить перед публикацией в магазине.
 
 Проверки и ограничения: [VERIFICATION.md](docs/VERIFICATION.md). Статус: [IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md). Снимки настоящего Compose-интерфейса: [SCREENSHOTS.md](docs/SCREENSHOTS.md). Архитектура: [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
