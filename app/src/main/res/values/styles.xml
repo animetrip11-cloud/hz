@@ -1,0 +1,9 @@
+<resources>
+    <color name="graphite">#0D1117</color>
+    <style name="Theme.Koma" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item><item name="android:windowLightStatusBar">false</item><item name="android:statusBarColor">@color/graphite</item><item name="android:navigationBarColor">@color/graphite</item><item name="android:windowActionModeOverlay">true</item><item name="android:colorAccent">#E65A7A</item><item name="android:windowBackground">@color/graphite</item>
+    </style>
+    <style name="Theme.Koma.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/graphite</item><item name="windowSplashScreenAnimatedIcon">@drawable/ic_koma</item><item name="postSplashScreenTheme">@style/Theme.Koma</item>
+    </style>
+</resources>

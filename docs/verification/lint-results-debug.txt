@@ -1,0 +1,223 @@
+/workspace/hz/app/src/main/java/dev/koma/reader/ui/KomaApp.kt:84: Warning: Using Configuration.screenWidthDp instead of LocalWindowInfo.current.containerSize [ConfigurationScreenWidthHeight from androidx.compose.ui]
+    val columns=if(config.screenWidthDp>=440 && androidx.compose.ui.platform.LocalDensity.current.fontScale<1.3f)3 else 2
+                   ~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ConfigurationScreenWidthHeight":
+   Configuration.screenWidthDp and Configuration.screenHeightDp have different
+   insets behaviour depending on target SDK version, and are rounded to the
+   nearest Dp. This means that using these values in composition to size a
+   layout can result in issues, as these values do not accurately represent
+   the actual available window size. Instead it is recommended to use
+   WindowInfo.containerSize which accurately represents the window size.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.ui
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+/workspace/hz/app/src/main/AndroidManifest.xml:2: Warning: The attribute android:allowBackup is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute android:dataExtractionRules specifying an @xml resource which configures cloud backups and device transfers on Android 12 and higher. [DataExtractionRules]
+    <application android:name=".KomaApplication" android:allowBackup="false" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:theme="@style/Theme.Koma.Splash" android:supportsRtl="true">
+                                                                      ~~~~~
+
+   Explanation for issues of type "DataExtractionRules":
+   Before Android 12, the attributes android:allowBackup and
+   android:fullBackupContent were used to configure all forms of backup,
+   including cloud backups, device-to-device transfers and adb backup.
+
+   In Android 12 and higher, these attributes have been deprecated and will
+   only apply to cloud backups. You should instead use the attribute
+   android:dataExtractionRules, specifying an @xml resource that configures
+   which files to back up, for cloud backups and for device-to-device
+   transfers, separately. If your minSdkVersion supports older versions,
+   you'll still want to specify an android:fullBackupContent resource if the
+   default behavior is not right for your app.
+
+   https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   https://goo.gle/DataExtractionRules
+
+/workspace/hz/app/src/main/res/mipmap-anydpi-v26: Warning: This folder configuration (v26) is unnecessary; minSdkVersion is 26. Merge all the resources in this folder into mipmap-anydpi. [ObsoleteSdkInt]
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+/workspace/hz/app/src/main/res/drawable/ic_koma_mono.xml:1: Warning: The resource R.drawable.ic_koma_mono appears to be unused [UnusedResources]
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108"><group><path android:fillColor="#FFFFFF" android:pathData="M12,22 Q16,15 23,11 L51,11 L36,97 L22,97 Q11,91 11,84 Z"/><path android:fillColor="#FFFFFF" android:pathData="M58,11 L86,11 Q98,14 98,25 L98,39 L53,54 Q50,55 51,51 Z"/><path android:fillColor="#FFFFFF" android:pathData="M51,61 L98,46 L98,85 Q95,94 87,97 L43,97 Z"/></group></vector>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:50: Warning: The resource R.string.pages_count appears to be unused [UnusedResources]
+    <string name="pages_count">%1$d стр.</string>
+            ~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:60: Warning: The resource R.string.files appears to be unused [UnusedResources]
+    <string name="files">Файлы</string>
+            ~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:110: Warning: The resource R.string.reading_only appears to be unused [UnusedResources]
+    <string name="reading_only">Только во время чтения</string>
+            ~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:133: Warning: The resource R.string.loading appears to be unused [UnusedResources]
+    <string name="loading">Загружаем страницу…</string>
+            ~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:140: Warning: The resource R.string.page_go appears to be unused [UnusedResources]
+    <string name="page_go">Перейти на страницу</string>
+            ~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:141: Warning: The resource R.string.page_number appears to be unused [UnusedResources]
+    <string name="page_number">Номер страницы</string>
+            ~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:142: Warning: The resource R.string.bytes appears to be unused [UnusedResources]
+    <string name="bytes">%1$s</string>
+            ~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:144: Warning: The resource R.string.no_import appears to be unused [UnusedResources]
+    <string name="no_import">Нет новых файлов для добавления</string>
+            ~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:147: Warning: The resource R.string.remove_bookmark appears to be unused [UnusedResources]
+    <string name="remove_bookmark">Удалить закладку</string>
+            ~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:148: Warning: The resource R.string.search_icon appears to be unused [UnusedResources]
+    <string name="search_icon">Поиск</string>
+            ~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:149: Warning: The resource R.string.more appears to be unused [UnusedResources]
+    <string name="more">Дополнительные действия</string>
+            ~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:150: Warning: The resource R.string.manual_brightness appears to be unused [UnusedResources]
+    <string name="manual_brightness">Ручная яркость</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:153: Warning: The resource R.string.position_percent appears to be unused [UnusedResources]
+    <string name="position_percent">Позиция: %1$d%%</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:155: Warning: The resource R.string.no_chapters appears to be unused [UnusedResources]
+    <string name="no_chapters">Страницы тома</string>
+            ~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:156: Warning: The resource R.string.unknown_size appears to be unused [UnusedResources]
+    <string name="unknown_size">Уточняем размер</string>
+            ~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:157: Warning: The resource R.string.selected_files appears to be unused [UnusedResources]
+    <string name="selected_files">Выбрано файлов: %1$d</string>
+            ~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:158: Warning: The resource R.string.reader_title appears to be unused [UnusedResources]
+    <string name="reader_title">%1$s · %2$s</string>
+            ~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:159: Warning: The resource R.string.no_next appears to be unused [UnusedResources]
+    <string name="no_next">Это последний том</string>
+            ~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:160: Warning: The resource R.string.missing_body appears to be unused [UnusedResources]
+    <string name="missing_body">Выберите тот же PDF/CBZ. KOMA восстановит связь по содержимому.</string>
+            ~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:61: Warning: Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data [UsableSpace]
+                require(known<0 || known < files.usableSpace-8*1024*1024) { "space" }
+                                                 ~~~~~~~~~~~
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:70: Warning: Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data [UsableSpace]
+                            if(count%(4*1024*1024)<65536) require(files.usableSpace>8*1024*1024) { "space" }
+                                                                        ~~~~~~~~~~~
+
+   Explanation for issues of type "UsableSpace":
+   When you need to allocate disk space for large files, consider using the
+   new allocateBytes(FileDescriptor, long) API, which will automatically clear
+   cached files belonging to other apps (as needed) to meet your request.
+
+   When deciding if the device has enough disk space to hold your new data,
+   call getAllocatableBytes(UUID) instead of using getUsableSpace(), since the
+   former will consider any cached data that the system is willing to clear on
+   your behalf.
+
+   Note that these methods require API level 26. If your app is running on
+   older devices, you will probably need to use both APIs, conditionally
+   switching on Build.VERSION.SDK_INT. Lint only looks in the same compilation
+   unit to see if you are already using both APIs, so if it warns even though
+   you are already using the new API, consider moving the calls to the same
+   file or suppressing the warning.
+
+/workspace/hz/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1: Warning: The application adaptive icon is missing a monochrome tag [MonochromeLauncherIcon]
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"><background android:drawable="@color/graphite"/><foreground android:drawable="@drawable/ic_launcher_foreground"/></adaptive-icon>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "MonochromeLauncherIcon":
+   If android:roundIcon and android:icon are both in your manifest, you must
+   either remove the reference to android:roundIcon if it is not needed; or,
+   supply the monochrome icon in the drawable defined by the android:roundIcon
+   and android:icon attribute.
+
+   For example, if android:roundIcon and android:icon are both in the
+   manifest, a launcher might choose to use android:roundIcon over
+   android:icon to display the adaptive app icon. Therefore, your themed
+   application iconwill not show if your monochrome attribute is not also
+   specified in android:roundIcon.
+
+/workspace/hz/app/src/main/java/dev/koma/reader/ui/KomaApp.kt:197: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+                    c.error!=null->{ Text(stringResource(errorResource(c.error)),color=Accent);TextButton({vm.prepare(listOf(Uri.parse(c.uri)),c.existingWork)}){Text(stringResource(R.string.retry))} }
+                                                                                                                             ~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/java/dev/koma/reader/reader/PageSource.kt:30: Warning: Use the KTX function createBitmap instead? [UseKtx]
+        Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888).also { bitmap ->
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UseKtx":
+   The Android KTX libraries decorates the Android platform SDK as well as
+   various libraries with more convenient extension functions available from
+   Kotlin, allowing you to use default parameters, named parameters, and
+   more.
+
+   Available options:
+
+   **remove-defaults** (default is true):
+   Whether to skip arguments that match the defaults provided by the extension.
+
+   Extensions often provide default values for some of the parameters. For example:
+   ```kotlin
+   fun Path.readLines(charset: Charset = Charsets.UTF_8): List<String> { return Files.readAllLines(this, charset) }
+   ```
+   This lint check will by default automatically omit parameters that match the default, so if your code was calling ```kotlin
+   Files.readAllLines(file, Charset.UTF_8)
+   ```
+   lint would replace this with
+   ```kotlin
+   file.readLines()
+   ```
+   rather than
+   ```kotlin
+   file.readLines(Charset.UTF_8
+   ```
+   You can turn this behavior off using this option.
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UseKtx">
+           <option name="remove-defaults" value="true" />
+       </issue>
+   </lint>
+   ```
+
+   **require-present** (default is true):
+   Whether to only offer extensions already available.
+
+   This option lets you only have lint suggest extension replacements if those extensions are already available on the class path (in other words, you're already depending on the library containing the extension method.)
+
+   To configure this option, use a `lint.xml` file with an <option> like this:
+
+   ```xml
+   <lint>
+       <issue id="UseKtx">
+           <option name="require-present" value="true" />
+       </issue>
+   </lint>
+   ```
+
+0 errors, 28 warnings
