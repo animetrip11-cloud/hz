@@ -57,6 +57,9 @@
 /workspace/hz/app/src/main/res/values/strings.xml:110: Warning: The resource R.string.reading_only appears to be unused [UnusedResources]
     <string name="reading_only">Только во время чтения</string>
             ~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:115: Warning: The resource R.string.app_files appears to be unused [UnusedResources]
+    <string name="app_files">Локальные копии манги</string>
+            ~~~~~~~~~~~~~~~~
 /workspace/hz/app/src/main/res/values/strings.xml:133: Warning: The resource R.string.loading appears to be unused [UnusedResources]
     <string name="loading">Загружаем страницу…</string>
             ~~~~~~~~~~~~~~
@@ -105,6 +108,12 @@
 /workspace/hz/app/src/main/res/values/strings.xml:160: Warning: The resource R.string.missing_body appears to be unused [UnusedResources]
     <string name="missing_body">Выберите тот же PDF/CBZ. KOMA восстановит связь по содержимому.</string>
             ~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:166: Warning: The resource R.string.link_originals appears to be unused [UnusedResources]
+    <string name="link_originals">Убрать копии: выбрать исходники</string>
+            ~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/res/values/strings.xml:167: Warning: The resource R.string.link_originals_body appears to be unused [UnusedResources]
+    <string name="link_originals_body">Чтобы освободить место после версии 1.0, выберите те же PDF/CBZ и подтвердите добавление. KOMA сверит содержимое, сохранит прогресс и закладки и удалит только свою копию. Исходники останутся на месте.</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "UnusedResources":
    Unused resources make applications larger and slow down builds.
@@ -142,13 +151,13 @@
 /workspace/hz/app/src/main/java/dev/koma/reader/reader/PageSource.kt:35: Warning: Use the KTX function createBitmap instead? [UseKtx]
         Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888).also { bitmap ->
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:50: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:60: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
         return openUri(Uri.parse(v.sourceUri),v.format)
                        ~~~~~~~~~~~~~~~~~~~~~~
-/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:59: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:69: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
             val uri=Uri.parse(v.sourceUri)
                     ~~~~~~~~~~~~~~~~~~~~~~
-/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:115: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:125: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
             openUri(Uri.parse(c.uri),c.format).use {require(it.count==c.pages)}
                     ~~~~~~~~~~~~~~~~
 
@@ -205,4 +214,4 @@
    </lint>
    ```
 
-0 errors, 29 warnings
+0 errors, 32 warnings

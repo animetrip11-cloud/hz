@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dev.koma.reader.LongPageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:33:28" hostname="b9aee7d56d20" time="0.123">
+<testsuite name="dev.koma.reader.LongPageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:56:04" hostname="b9aee7d56d20" time="0.134">
   <properties/>
-  <testcase name="twentyFourThousandPixelStripRendersVisibleRegionsAtFullWidth" classname="dev.koma.reader.LongPageTest" time="0.123"/>
+  <testcase name="twentyFourThousandPixelStripRendersVisibleRegionsAtFullWidth" classname="dev.koma.reader.LongPageTest" time="0.134"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

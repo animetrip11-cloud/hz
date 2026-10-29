@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import dev.koma.reader.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
@@ -36,6 +37,15 @@ class Repository(val context: Context) {
     suspend fun initialize()=withContext(Dispatchers.IO) {
         initialization.withLock {
             if(!initialized) {
+                // Apply the new default once for existing installs, retaining later user choices.
+                context.settings.edit { values ->
+                    val applied=booleanPreferencesKey("ltr_default_applied")
+                    if(values[applied]!=true) {
+                        val current=runCatching {codec.decodeFromString<Preferences>(values[key] ?: "{}")}.getOrDefault(Preferences())
+                        if(current.reading.mode=="rtl")values[key]=codec.encodeToString(current.copy(reading=current.reading.copy(mode="ltr")))
+                        values[applied]=true
+                    }
+                }
                 val volumes=dao.allVolumes();val known=volumes.map { it.hash }.toSet()
                 // A process may have died after rename but before its database transaction.
                 files.listFiles()?.filter { it.name !in known }?.forEach { it.delete() }

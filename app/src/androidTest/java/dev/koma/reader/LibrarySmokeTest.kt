@@ -39,7 +39,7 @@ class LibrarySmokeTest {
         compose.onNodeWithText("Продолжить").performScrollTo().performClick()
         waitText("Страница 1 / 3")
         compose.waitUntil(120_000) { compose.onAllNodesWithContentDescription("Предпросмотр страницы 1").fetchSemanticsNodes().isNotEmpty() }
-        compose.onRoot().performTouchInput {swipeRight()}
+        compose.onRoot().performTouchInput {swipeLeft()}
         waitText("Страница 2 / 3")
         compose.onNodeWithContentDescription("Закладка текущей страницы").performClick()
         shot("04-reader")

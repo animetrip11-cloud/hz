@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dev.koma.reader.RepositoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:33:35" hostname="b9aee7d56d20" time="1.671">
+<testsuite name="dev.koma.reader.RepositoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:56:10" hostname="b9aee7d56d20" time="1.963">
   <properties/>
-  <testcase name="duplicateBytesDifferentNamesAndRestoreReattachment" classname="dev.koma.reader.RepositoryTest" time="0.545"/>
-  <testcase name="linkingLegacyCopyKeepsAllReadingDataAndOnlyThenRemovesCopy" classname="dev.koma.reader.RepositoryTest" time="0.208"/>
-  <testcase name="positionsBookmarksAndIndependentHistorySurviveDatabaseReopen" classname="dev.koma.reader.RepositoryTest" time="0.065"/>
-  <testcase name="restoreMergePreservesLocalAndRelinksByHash" classname="dev.koma.reader.RepositoryTest" time="0.254"/>
-  <testcase name="sameNameDifferentContentIsNotDuplicate" classname="dev.koma.reader.RepositoryTest" time="0.145"/>
-  <testcase name="importingOriginalDoesNotCreatePermanentOrTemporaryMangaCopy" classname="dev.koma.reader.RepositoryTest" time="0.12"/>
-  <testcase name="removingVolumeOnlyRemovesItsRelatedData" classname="dev.koma.reader.RepositoryTest" time="0.092"/>
-  <testcase name="inaccessibleOriginalKeepsProgressAndBackupDoesNotExportDeviceUri" classname="dev.koma.reader.RepositoryTest" time="0.181"/>
-  <testcase name="cancellationRemovesPartialCopyAndPreservesOriginal" classname="dev.koma.reader.RepositoryTest" time="0.059"/>
+  <testcase name="duplicateBytesDifferentNamesAndRestoreReattachment" classname="dev.koma.reader.RepositoryTest" time="0.761"/>
+  <testcase name="linkingLegacyCopyKeepsAllReadingDataAndOnlyThenRemovesCopy" classname="dev.koma.reader.RepositoryTest" time="0.196"/>
+  <testcase name="positionsBookmarksAndIndependentHistorySurviveDatabaseReopen" classname="dev.koma.reader.RepositoryTest" time="0.159"/>
+  <testcase name="restoreMergePreservesLocalAndRelinksByHash" classname="dev.koma.reader.RepositoryTest" time="0.163"/>
+  <testcase name="sameNameDifferentContentIsNotDuplicate" classname="dev.koma.reader.RepositoryTest" time="0.174"/>
+  <testcase name="importingOriginalDoesNotCreatePermanentOrTemporaryMangaCopy" classname="dev.koma.reader.RepositoryTest" time="0.152"/>
+  <testcase name="removingVolumeOnlyRemovesItsRelatedData" classname="dev.koma.reader.RepositoryTest" time="0.15"/>
+  <testcase name="inaccessibleOriginalKeepsProgressAndBackupDoesNotExportDeviceUri" classname="dev.koma.reader.RepositoryTest" time="0.152"/>
+  <testcase name="cancellationRemovesPartialCopyAndPreservesOriginal" classname="dev.koma.reader.RepositoryTest" time="0.051"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

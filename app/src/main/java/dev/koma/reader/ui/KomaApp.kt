@@ -64,7 +64,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
                         0->LibraryScreen(vm,{nav.navigate("work/$it")},{open(it,null)},{pick(null)})
                         1->BookmarksScreen(vm,open,snackbar)
                         2->HistoryScreen(vm) { open(it,null) }
-                        3->SettingsScreen(vm) {pick(null)}
+                        3->SettingsScreen(vm)
                     }
                 }
             }

@@ -17,20 +17,17 @@ import dev.koma.reader.core.*
 import dev.koma.reader.data.codec
 import kotlinx.coroutines.*
 
-@Composable fun SettingsScreen(vm:LibraryViewModel,linkOriginals:()->Unit) {
-    val p by vm.prefs.collectAsStateWithLifecycle(); val scope=rememberCoroutineScope(); var memory by remember { mutableLongStateOf(0L) };var cache by remember { mutableLongStateOf(0L) };var confirmRestore by remember { mutableStateOf(false) }
+@Composable fun SettingsScreen(vm:LibraryViewModel) {
+    val p by vm.prefs.collectAsStateWithLifecycle(); val scope=rememberCoroutineScope(); var cache by remember { mutableLongStateOf(0L) };var confirmRestore by remember { mutableStateOf(false) }
     val export=rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri->if(uri!=null) scope.launch { runCatching { val text=vm.repo.export();withContext(Dispatchers.IO) { vm.repo.context.contentResolver.openOutputStream(uri,"wt")!!.bufferedWriter().use { it.write(text) } } }.onSuccess {vm.message.tryEmit("backup_saved")}.onFailure {vm.message.tryEmit("error_generic")} } }
     val restore=rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri->if(uri!=null) scope.launch { runCatching { withContext(Dispatchers.IO) {
         val text=vm.repo.context.contentResolver.openInputStream(uri)!!.bufferedReader().use { reader->val out=StringBuilder();val buffer=CharArray(8192);while(true){val n=reader.read(buffer);if(n<0)break;require(out.length+n<=16*1024*1024);out.append(buffer,0,n)};out.toString() };vm.repo.restore(text)
     } }.onSuccess {vm.message.tryEmit("backup_restored")}.onFailure {vm.message.tryEmit("error_backup")} } }
-    LaunchedEffect(Unit) { withContext(Dispatchers.IO) { memory=vm.repo.files.listFiles()?.sumOf { it.length() } ?: 0;cache=vm.repo.context.cacheDir.walkTopDown().filter { it.isFile }.sumOf { it.length() } } }
+    LaunchedEffect(Unit) { withContext(Dispatchers.IO) { cache=vm.repo.context.cacheDir.walkTopDown().filter { it.isFile }.sumOf { it.length() } } }
     LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         item { ScreenTitle(stringResource(R.string.settings),stringResource(R.string.settings_subtitle)) }
         item { Section(stringResource(R.string.defaults));Panel { ReadingControls(p.reading){vm.save(p.copy(reading=it))} } }
         item { Section(stringResource(R.string.memory));Panel {
-            Text("${stringResource(R.string.app_files)} · ${sizeLabel(memory)}")
-            Text(stringResource(R.string.link_originals_body),color=Muted)
-            OutlinedButton(linkOriginals,Modifier.fillMaxWidth().heightIn(min=52.dp)){Text(stringResource(R.string.link_originals))}
             Text("${stringResource(R.string.cache)} · ${sizeLabel(cache)}")
             OutlinedButton({scope.launch { withContext(Dispatchers.IO) { vm.repo.context.cacheDir.listFiles()?.forEach { it.deleteRecursively() } };dev.koma.reader.reader.PageBitmaps.clear();cache=0;vm.message.emit("cache_cleared") }}){Text(stringResource(R.string.clear_cache))}
         } }

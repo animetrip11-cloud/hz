@@ -28,7 +28,7 @@
     <string name="sort_added">Недавно добавлено</string>
     <string name="sort_title">По названию</string>
     <string name="empty_library">Добавить первую мангу</string>
-    <string name="empty_library_body">Выберите PDF или CBZ. Ваша личная библиотека доступна офлайн.</string>
+    <string name="empty_library_body">Выберите PDF или CBZ.</string>
     <string name="nothing">Ничего не найдено</string>
     <string name="nothing_body">Измените запрос или очистите фильтры.</string>
     <string name="work">Произведение</string>
@@ -67,7 +67,7 @@
     <string name="new_work">Новое произведение</string>
     <string name="work_name">Название произведения</string>
     <string name="file_name">Название тома</string>
-    <string name="preparing">Проверяем файлы без копирования…</string>
+    <string name="preparing">Добавляем тайтл</string>
     <string name="import_progress">%1$s · %2$s</string>
     <string name="retry">Повторить</string>
     <string name="cancel_import">Отменить добавление</string>
@@ -123,7 +123,7 @@
     <string name="restore_body">Новые записи будут добавлены. Совпадающие локальные позиции, заметки и настройки сохранятся. Файлов манги в копии нет.</string>
     <string name="about">О приложении</string>
     <string name="about_body">KOMA · Личная офлайн-библиотека PDF и CBZ
-Версия 1.1.0</string>
+Версия 1.0.0</string>
     <string name="as_default">Как по умолчанию</string>
     <string name="individual">Настройки произведения</string>
     <string name="inherited">Наследуется от общих настроек</string>

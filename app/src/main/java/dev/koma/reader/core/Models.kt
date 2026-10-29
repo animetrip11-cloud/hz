@@ -14,7 +14,7 @@ data class Bookmark(val hash: String, val page: Int, val note: String = "", val 
 @Serializable @Entity(tableName="history")
 data class History(@PrimaryKey val hash: String, val opened: Long = System.currentTimeMillis())
 @Serializable
-data class ReadingSettings(val mode: String = "rtl", val fitWidth: Boolean = false, val keepAwake: Boolean = true, val volumeKeys: Boolean = false, val brightness: Float = -1f, val autoLongPages: Boolean = true)
+data class ReadingSettings(val mode: String = "ltr", val fitWidth: Boolean = false, val keepAwake: Boolean = true, val volumeKeys: Boolean = false, val brightness: Float = -1f, val autoLongPages: Boolean = true)
 @Serializable
 data class Overrides(val mode: String? = null, val fitWidth: Boolean? = null, val keepAwake: Boolean? = null, val volumeKeys: Boolean? = null, val brightness: Float? = null, val autoLongPages: Boolean? = null) {
     fun resolve(base: ReadingSettings) = ReadingSettings(mode ?: base.mode, fitWidth ?: base.fitWidth, keepAwake ?: base.keepAwake, volumeKeys ?: base.volumeKeys, brightness ?: base.brightness, autoLongPages ?: base.autoLongPages)

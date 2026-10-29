@@ -63,7 +63,7 @@ class AndroidUiTest {
         compose.onNodeWithText("Продолжить").performScrollTo().performClick()
         waitText("Страница 1 / 4")
         compose.waitUntil(30_000) {compose.onAllNodesWithContentDescription("Предпросмотр страницы 1").fetchSemanticsNodes().isNotEmpty()}
-        compose.onRoot().performTouchInput {swipeRight()}
+        compose.onRoot().performTouchInput {swipeLeft()}
         waitText("Страница 2 / 4")
         compose.onNodeWithContentDescription("Закладка текущей страницы").performClick()
         shot("robolectric-07-reader")

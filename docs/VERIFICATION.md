@@ -1,4 +1,4 @@
-# Проверка KOMA 1.1.0
+# Проверка KOMA 1.0.0 · сборка 3
 
 29 октября 2026. Android minSdk 26 / targetSdk 35, Gradle Wrapper 8.11.1, AGP 8.9.2, Kotlin 2.1.20, JDK 21.0.8+9. Robolectric обновлён до стабильного 4.17: прежний 4.14.1 подменял BitmapRegionDecoder пустым bitmap; assertions пикселей не отключались.
 
@@ -8,7 +8,7 @@
 ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest :app:lintDebug :app:assembleDebugAndroidTest
 ```
 
-- APK 1.1.0 / versionCode 2 успешно собран. Поставляемая копия: downloads/KOMA-debug.apk, SHA-256 рядом.
+- APK 1.0.0 / versionCode 3 успешно собран. Поставляемая копия: downloads/KOMA-debug.apk, SHA-256 рядом.
 - Подпись APK проверена apksigner; SHA-256 сертификата совпадает с опубликованным APK 1.0.0. Application ID dev.koma.reader сохранён. Можно обновлять приложение с сохранением базы, без удаления.
 - 21 автоматический тест: 0 failed/errors/skipped. XML и журнал итоговой сборки — в docs/verification/.
 - Lint: 0 ошибок; оставшиеся предупреждения записаны в verification/lint-results-debug.txt.
@@ -47,3 +47,7 @@
 ## Официальные источники
 
 Обычные страницы developer.android.com из задания вернули HTTP 403. Вместо утверждения о прочитанной недоступной веб-справке установлены официальные `sources;android-35` через sdkmanager и просмотрены Javadoc PdfRenderer.java и AdaptiveIconDrawable.java: seekable descriptor, закрытие страниц/renderer, слои 108 dp, viewport 72 dp и safe zone 66 dp. Подтверждение доступности используемых API — успешная компиляция и lint для minSdk 26. Архивы JDK/Gradle и Android command-line tools сверены с официальными контрольными суммами; компоненты SDK установлены официальным sdkmanager.
+
+## Сборка 3: интерфейс и направление
+
+Видимая версия оставлена 1.0.0 по просьбе пользователя, versionCode повышен до 3 для корректного обновления. Удалены локальные копии и кнопка перехода из раздела «Память»: там только кэш миниатюр/очистка. Тексты импорта и пустой библиотеки заменены. Общий default — LTR; Compose-сценарий перелистывает следующую страницу свайпом влево. Прежний RTL по умолчанию обновляется однократно через DataStore; индивидуальные overrides не меняются.
