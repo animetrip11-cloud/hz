@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.koma.reader.SeekableZipTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:33:37" hostname="b9aee7d56d20" time="0.014">
+  <properties/>
+  <testcase name="compressedStoredUnicodeAndNaturalOrderWithoutExtraction" classname="dev.koma.reader.SeekableZipTest" time="0.011"/>
+  <testcase name="zip64LocalHeaderBeyondFourGiBUsesLongOffsets" classname="dev.koma.reader.SeekableZipTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

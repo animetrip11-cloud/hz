@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dev.koma.reader.SafSourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:33:37" hostname="b9aee7d56d20" time="0.414">
+  <properties/>
+  <testcase name="contentUriIsRetainedAndArchiveReadThroughDescriptorWithoutCopy" classname="dev.koma.reader.SafSourceTest" time="0.414"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

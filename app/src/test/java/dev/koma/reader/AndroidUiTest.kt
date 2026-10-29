@@ -82,6 +82,38 @@ class AndroidUiTest {
         waitText("Истории, к которым вы возвращаетесь.")
         compose.onNodeWithText("Страница 2 / 4").assertExists()
         shot("robolectric-10-history-with-volume")
+        compose.onNodeWithText("Библиотека",useUnmergedTree=true).performClick()
+        val long=File(context.cacheDir,"Long-strip.cbz")
+        long.writeBytes(javaClass.classLoader!!.getResourceAsStream("Long-strip.cbz")!!.readBytes())
+        compose.runOnUiThread {compose.activity.incoming=Uri.fromFile(long)}
+        waitText("Добавить 1 том(а)")
+        compose.onNodeWithText("Добавить 1 том(а)").performScrollTo().performClick()
+        waitText("Моя библиотека")
+        compose.onNodeWithText("Long-strip").performScrollTo().performClick()
+        waitText("Тома")
+        compose.onNodeWithText("Продолжить").performScrollTo().performClick()
+        waitText("Страница 1 / 1")
+        compose.waitUntil(30_000) {compose.onAllNodesWithContentDescription("Страница 1, участок 1").fetchSemanticsNodes().isNotEmpty()}
+        val rootWidth=compose.onRoot().fetchSemanticsNode().boundsInRoot.width
+        val tileWidth=compose.onNodeWithContentDescription("Страница 1, участок 1").fetchSemanticsNode().boundsInRoot.width
+        org.junit.Assert.assertTrue("Long page fills the viewport width",tileWidth>=rootWidth*.95f)
+        shot("robolectric-11-long-cbz-top")
+        compose.onRoot().performTouchInput {swipe(center.copy(y=height*.60f),center.copy(y=height*.25f))}
+        compose.waitUntil(30_000) {runBlocking(Dispatchers.IO) {repo.dao.allVolumes().first {it.fileName=="Long-strip.cbz"}.offset>0f}}
+        compose.waitForIdle()
+        val visible=compose.onAllNodes(hasContentDescription("Страница 1, участок ",substring=true)).fetchSemanticsNodes().filter {it.boundsInRoot.height>0}.minBy {it.positionInRoot.y}
+        val beforeDescription=visible.config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].first()
+        val beforeTop=visible.positionInRoot.y
+        val saved=runBlocking(Dispatchers.IO) {repo.dao.allVolumes().first {it.fileName=="Long-strip.cbz"}}
+        compose.activityRule.scenario.recreate()
+        waitText("Страница 1 / 1")
+        compose.waitUntil(30_000) {compose.onAllNodesWithContentDescription(beforeDescription).fetchSemanticsNodes().isNotEmpty()}
+        compose.waitUntil(30_000) {
+            val node=compose.onAllNodesWithContentDescription(beforeDescription).fetchSemanticsNodes().firstOrNull()
+            node!=null && kotlin.math.abs(node.positionInRoot.y-beforeTop)<4f
+        }
+        org.junit.Assert.assertEquals(saved.offset,runBlocking(Dispatchers.IO) {repo.dao.volume(saved.hash)!!.offset},.005f)
+        shot("robolectric-12-long-cbz-resumed")
     }
 
 }

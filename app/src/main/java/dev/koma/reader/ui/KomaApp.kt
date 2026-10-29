@@ -44,7 +44,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
     val pick:(String?)->Unit={ id->target=id; picker.launch(arrayOf("application/pdf","application/zip","application/x-cbz","application/vnd.comicbook+zip","application/octet-stream")) }
     LaunchedEffect(incoming) { incoming?.let { vm.prepare(listOf(it),null); nav.navigate("import"); consume() } }
     LaunchedEffect(Unit) { vm.message.collect { key -> snackbar.showSnackbar(activity.getString(messageResource(key))) } }
-    val open:(Volume,Int?)->Unit={v,p-> if(v.available && vm.repo.file(v.hash).exists()) nav.navigate("reader/${v.hash}/${p ?: -1}") else pick(v.workId) }
+    val open:(Volume,Int?)->Unit={v,p-> if(v.available && (v.sourceUri!=null || vm.repo.file(v.hash).exists())) nav.navigate("reader/${v.hash}/${p ?: -1}") else pick(v.workId) }
     Scaffold(containerColor=Background,snackbarHost={SnackbarHost(snackbar)},bottomBar={
         if(route=="home") NavigationBar(containerColor=Surface,tonalElevation=0.dp) {
             listOf(R.string.library to KomaIcons.LocalLibrary,R.string.bookmarks to KomaIcons.BookmarkBorder,R.string.history to KomaIcons.History,R.string.settings to KomaIcons.Tune).forEachIndexed { i,(label,icon)->
@@ -64,7 +64,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
                         0->LibraryScreen(vm,{nav.navigate("work/$it")},{open(it,null)},{pick(null)})
                         1->BookmarksScreen(vm,open,snackbar)
                         2->HistoryScreen(vm) { open(it,null) }
-                        3->SettingsScreen(vm)
+                        3->SettingsScreen(vm) {pick(null)}
                     }
                 }
             }
@@ -184,6 +184,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
 }
 @Composable fun ImportScreen(vm:LibraryViewModel,back:()->Unit,commit:()->Unit,open:(Volume)->Unit,more:()->Unit) {
     val items by vm.candidates.collectAsStateWithLifecycle(); val busy by vm.busy.collectAsStateWithLifecycle(); val progress by vm.progress.collectAsStateWithLifecycle(); val name by vm.progressName.collectAsStateWithLifecycle(); val works by vm.works.collectAsStateWithLifecycle()
+    val volumes by vm.volumes.collectAsStateWithLifecycle()
     val count=items.count { it.error==null && it.duplicate==null }
     androidx.activity.compose.BackHandler { back() }
     Column {
@@ -193,6 +194,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
             if(busy) item { Panel { LinearProgressIndicator(Modifier.fillMaxWidth(),color=Accent);Text(stringResource(R.string.preparing));Text(stringResource(R.string.import_progress,name,sizeLabel(progress)),color=Muted);TextButton(back){Text(stringResource(R.string.cancel_import))} } }
             itemsIndexed(items,key={i,c->"$i-${c.uri}"}) { index,c-> Panel {
                 Text(c.name,fontWeight=FontWeight.Bold)
+                if(volumes.any {it.hash==c.hash && it.sourceUri==null})Text(stringResource(R.string.relink_copy),color=Accent)
                 when {
                     c.error!=null->{ Text(stringResource(errorResource(c.error)),color=Accent);TextButton({vm.prepare(listOf(Uri.parse(c.uri)),c.existingWork)}){Text(stringResource(R.string.retry))} }
                     c.duplicate!=null->{Text(stringResource(R.string.duplicate),color=Accent);TextButton({open(c.duplicate)}){Text(stringResource(R.string.open))} }
@@ -210,7 +212,7 @@ fun modeRes(s:String)=when(s) { "ltr"->R.string.ltr; "vertical"->R.string.vertic
         }
     }
 }
-fun errorResource(key:String)=when(key) { "error_password"->R.string.error_password;"error_access"->R.string.error_access;"error_space"->R.string.error_space;"error_format"->R.string.error_format;"error_empty"->R.string.error_empty;"error_duplicate"->R.string.error_duplicate;else->R.string.error_damaged }
+fun errorResource(key:String)=when(key) { "error_persistent"->R.string.error_persistent;"error_seekable"->R.string.error_seekable;"error_password"->R.string.error_password;"error_access"->R.string.error_access;"error_space"->R.string.error_space;"error_format"->R.string.error_format;"error_empty"->R.string.error_empty;"error_duplicate"->R.string.error_duplicate;else->R.string.error_damaged }
 @Composable fun BookmarksScreen(vm:LibraryViewModel,open:(Volume,Int?)->Unit,snackbar:SnackbarHostState) {
     val marks by vm.bookmarks.collectAsStateWithLifecycle();val volumes by vm.volumes.collectAsStateWithLifecycle();val works by vm.works.collectAsStateWithLifecycle()
     var query by rememberSaveable { mutableStateOf("") };var filter by rememberSaveable { mutableStateOf("all") };var note by remember { mutableStateOf<Bookmark?>(null) };val scope=rememberCoroutineScope()

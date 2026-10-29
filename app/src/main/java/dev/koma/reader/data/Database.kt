@@ -26,5 +26,11 @@ import kotlinx.coroutines.flow.Flow
     @Query("DELETE FROM volumes WHERE hash=:hash") suspend fun removeVolume(hash: String)
     @Query("DELETE FROM works WHERE id=:id AND NOT EXISTS(SELECT 1 FROM volumes WHERE workId=:id)") suspend fun removeEmptyWork(id: String)
 }
-@Database(entities=[Work::class, Volume::class, Bookmark::class, History::class], version=1, exportSchema=true)
+@Database(entities=[Work::class, Volume::class, Bookmark::class, History::class], version=2, exportSchema=true)
 abstract class KomaDatabase: RoomDatabase() { abstract fun library(): LibraryDao }
+
+val MIGRATION_1_2=object:androidx.room.migration.Migration(1,2) {
+    override fun migrate(db:androidx.sqlite.db.SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE volumes ADD COLUMN sourceUri TEXT DEFAULT NULL")
+    }
+}

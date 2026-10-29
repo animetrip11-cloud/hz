@@ -87,4 +87,49 @@ class RepositoryTest {
         assertTrue(File(c.filesDir,"staging").listFiles().isNullOrEmpty())
     }
 
+    @Test fun importingOriginalDoesNotCreatePermanentOrTemporaryMangaCopy()=runBlocking {
+        val c=RuntimeEnvironment.getApplication();val original=File(c.cacheDir,"external.cbz")
+        original.writeBytes(javaClass.classLoader!!.getResourceAsStream("Тест Том 2.cbz")!!.readBytes())
+        val bytes=original.readBytes();val items=repo.prepare(listOf(Uri.fromFile(original)),null){_,_->}
+        assertNull(items.single().error);assertTrue(repo.files.listFiles().isNullOrEmpty())
+        assertTrue(File(c.filesDir,"staging").listFiles().isNullOrEmpty())
+        repo.commit(items){}
+        val v=repo.dao.volume(items.single().hash)!!
+        assertEquals(Uri.fromFile(original).toString(),v.sourceUri);assertTrue(repo.canRead(v));assertFalse(repo.file(v.hash).exists())
+        repo.db.close();repo=Repository(c);repo.initialize()
+        assertTrue(repo.canRead(repo.dao.volume(v.hash)!!))
+        repo.openSource(repo.dao.volume(v.hash)!!).use {assertEquals(4,it.count)}
+        repo.delete(repo.dao.volume(v.hash)!!)
+        assertArrayEquals(bytes,original.readBytes())
+    }
+    @Test fun linkingLegacyCopyKeepsAllReadingDataAndOnlyThenRemovesCopy()=runBlocking {
+        val c=RuntimeEnvironment.getApplication();val original=File(c.cacheDir,"legacy-original.cbz")
+        original.writeBytes(javaClass.classLoader!!.getResourceAsStream("Тест Том 2.cbz")!!.readBytes())
+        val hash=MessageDigest.getInstance("SHA-256").digest(original.readBytes()).joinToString(""){"%02x".format(it)}
+        repo.dao.put(Work("legacy","Моё название",overrides=codec.encodeToString(Overrides(mode="vertical"))))
+        val legacy=Volume(hash,"legacy","Мой том","old.cbz","CBZ",4,original.length(),7,page=2,offset=.45f,completed=true)
+        repo.dao.put(legacy);repo.dao.put(Bookmark(hash,2,"Моя заметка"));repo.open(hash);original.copyTo(repo.file(hash))
+        val items=repo.prepare(listOf(Uri.fromFile(original)),null){_,_->}
+        assertNull(items.single().duplicate);assertTrue(repo.file(hash).exists())
+        // A failed commit cannot delete a good private copy.
+        runCatching {repo.commit(listOf(items.single().copy(uri=Uri.fromFile(File(c.cacheDir,"absent")).toString()))) {}}
+        assertTrue(repo.file(hash).exists());assertNull(repo.dao.volume(hash)!!.sourceUri)
+        repo.commit(items){}
+        val linked=repo.dao.volume(hash)!!
+        assertEquals(legacy.copy(sourceUri=Uri.fromFile(original).toString()),linked)
+        assertFalse(repo.file(hash).exists());assertTrue(original.exists())
+        assertEquals("Моя заметка",repo.dao.allBookmarks().single().note)
+        assertEquals("Моё название",repo.dao.work("legacy")!!.title)
+        assertEquals("vertical",codec.decodeFromString<Overrides>(repo.dao.work("legacy")!!.overrides!!).mode)
+    }
+    @Test fun inaccessibleOriginalKeepsProgressAndBackupDoesNotExportDeviceUri()=runBlocking {
+        val c=RuntimeEnvironment.getApplication();val original=File(c.cacheDir,"missing-later.cbz")
+        original.writeBytes(javaClass.classLoader!!.getResourceAsStream("Тест Том 2.cbz")!!.readBytes())
+        val items=repo.prepare(listOf(Uri.fromFile(original)),null){_,_->};repo.commit(items){}
+        val hash=items.single().hash;repo.dao.position(hash,2,.6f);repo.dao.put(Bookmark(hash,2,"Сохранено"))
+        assertNull(codec.decodeFromString<Backup>(repo.export()).volumes.single().sourceUri)
+        original.delete();repo.db.close();repo=Repository(c);repo.initialize()
+        assertFalse(repo.dao.volume(hash)!!.available);assertEquals(2,repo.dao.volume(hash)!!.page);assertEquals("Сохранено",repo.dao.allBookmarks().single().note)
+    }
+
 }

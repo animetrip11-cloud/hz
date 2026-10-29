@@ -17,7 +17,7 @@ import dev.koma.reader.core.*
 import dev.koma.reader.data.codec
 import kotlinx.coroutines.*
 
-@Composable fun SettingsScreen(vm:LibraryViewModel) {
+@Composable fun SettingsScreen(vm:LibraryViewModel,linkOriginals:()->Unit) {
     val p by vm.prefs.collectAsStateWithLifecycle(); val scope=rememberCoroutineScope(); var memory by remember { mutableLongStateOf(0L) };var cache by remember { mutableLongStateOf(0L) };var confirmRestore by remember { mutableStateOf(false) }
     val export=rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri->if(uri!=null) scope.launch { runCatching { val text=vm.repo.export();withContext(Dispatchers.IO) { vm.repo.context.contentResolver.openOutputStream(uri,"wt")!!.bufferedWriter().use { it.write(text) } } }.onSuccess {vm.message.tryEmit("backup_saved")}.onFailure {vm.message.tryEmit("error_generic")} } }
     val restore=rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri->if(uri!=null) scope.launch { runCatching { withContext(Dispatchers.IO) {
@@ -29,6 +29,8 @@ import kotlinx.coroutines.*
         item { Section(stringResource(R.string.defaults));Panel { ReadingControls(p.reading){vm.save(p.copy(reading=it))} } }
         item { Section(stringResource(R.string.memory));Panel {
             Text("${stringResource(R.string.app_files)} · ${sizeLabel(memory)}")
+            Text(stringResource(R.string.link_originals_body),color=Muted)
+            OutlinedButton(linkOriginals,Modifier.fillMaxWidth().heightIn(min=52.dp)){Text(stringResource(R.string.link_originals))}
             Text("${stringResource(R.string.cache)} · ${sizeLabel(cache)}")
             OutlinedButton({scope.launch { withContext(Dispatchers.IO) { vm.repo.context.cacheDir.listFiles()?.forEach { it.deleteRecursively() } };dev.koma.reader.reader.PageBitmaps.clear();cache=0;vm.message.emit("cache_cleared") }}){Text(stringResource(R.string.clear_cache))}
         } }
@@ -40,6 +42,7 @@ import kotlinx.coroutines.*
 @Composable fun ReadingControls(s:ReadingSettings,change:(ReadingSettings)->Unit) {
     Text(stringResource(R.string.mode),color=Muted)
     FlowChoices(listOf("rtl","ltr","vertical"),s.mode,{stringResource(modeRes(it))}){change(s.copy(mode=it))}
+    Toggle(stringResource(R.string.auto_long_pages),s.autoLongPages){change(s.copy(autoLongPages=it))}
     Text(stringResource(R.string.scale),color=Muted)
     Row { FilterChip(!s.fitWidth,{change(s.copy(fitWidth=false))},label={Text(stringResource(R.string.whole_page))});Spacer(Modifier.width(8.dp));FilterChip(s.fitWidth,{change(s.copy(fitWidth=true))},label={Text(stringResource(R.string.fit_width))}) }
     Toggle(stringResource(R.string.awake),s.keepAwake){change(s.copy(keepAwake=it))}
@@ -59,7 +62,7 @@ import kotlinx.coroutines.*
             val effective=overrides.resolve(p.reading)
             ReadingControls(effective) { updated->
                 // Only fields actually changed become overrides; inherited fields stay null.
-                overrides=overrides.copy(mode=if(updated.mode!=effective.mode) updated.mode else overrides.mode,fitWidth=if(updated.fitWidth!=effective.fitWidth) updated.fitWidth else overrides.fitWidth,keepAwake=if(updated.keepAwake!=effective.keepAwake) updated.keepAwake else overrides.keepAwake,volumeKeys=if(updated.volumeKeys!=effective.volumeKeys) updated.volumeKeys else overrides.volumeKeys,brightness=if(updated.brightness!=effective.brightness) updated.brightness else overrides.brightness)
+                overrides=overrides.copy(mode=if(updated.mode!=effective.mode) updated.mode else overrides.mode,fitWidth=if(updated.fitWidth!=effective.fitWidth) updated.fitWidth else overrides.fitWidth,keepAwake=if(updated.keepAwake!=effective.keepAwake) updated.keepAwake else overrides.keepAwake,volumeKeys=if(updated.volumeKeys!=effective.volumeKeys) updated.volumeKeys else overrides.volumeKeys,brightness=if(updated.brightness!=effective.brightness) updated.brightness else overrides.brightness,autoLongPages=if(updated.autoLongPages!=effective.autoLongPages)updated.autoLongPages else overrides.autoLongPages)
             }
             TextButton({overrides=Overrides()}){Text(stringResource(R.string.as_default))}
         }

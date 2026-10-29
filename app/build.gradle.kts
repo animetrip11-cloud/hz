@@ -12,14 +12,15 @@ android {
         applicationId = "dev.koma.reader"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
     sourceSets.getByName("test").resources.srcDir("../test-documents")
+    sourceSets.getByName("test").resources.srcDir("schemas")
     sourceSets.getByName("androidTest").assets.srcDir("../test-documents")
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -52,7 +53,7 @@ dependencies {
     testImplementation(platform("androidx.compose:compose-bom:2025.04.01"))
     testImplementation("androidx.compose.ui:ui-test-junit4")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("org.robolectric:robolectric:4.17")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     androidTestImplementation(platform("androidx.compose:compose-bom:2025.04.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

@@ -9,9 +9,9 @@ object PageBitmaps {
     private val cache=object:LruCache<String,Bitmap>(16*1024*1024) {
         override fun sizeOf(key:String,value:Bitmap)=value.allocationByteCount
     }
-    @Synchronized fun load(file:File,format:String,page:Int,width:Int):Bitmap {
-        val key="${file.name}:$page:$width"
-        return cache.get(key) ?: PageSource.open(file,format).use { it.render(page,width) }.also { cache.put(key,it) }
+    @Synchronized fun load(hash:String,page:Int,width:Int,open:()->PageSource):Bitmap {
+        val key="$hash:$page:$width"
+        return cache.get(key) ?: open().use { it.render(page,width) }.also { cache.put(key,it) }
     }
     fun clear()=cache.evictAll()
 }

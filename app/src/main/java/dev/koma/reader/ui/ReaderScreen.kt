@@ -67,25 +67,26 @@ import kotlin.math.*
             IconAction(KomaIcons.Tune,stringResource(R.string.reader_settings)){showSettings=true}
         }
         Box(Modifier.weight(1f).fillMaxWidth()) {
-            if(settings.mode=="vertical") {
-                val list=rememberLazyListState(initialFirstVisibleItemIndex=page)
-                var ready by remember(hash) { mutableStateOf(false) }
-                val initialOffset=remember(hash) { offset };val initialPage=remember(hash) { page }
-                LaunchedEffect(list,hash) { snapshotFlow { val info=list.layoutInfo.visibleItemsInfo.firstOrNull();Triple(list.firstVisibleItemIndex,list.firstVisibleItemScrollOffset,info?.size ?: 1) }.distinctUntilChanged().collect { (p,o,s)-> if(ready) { page=p;offset=(o.toFloat()/s.coerceAtLeast(1)).coerceIn(0f,1f);vm.position(hash,p,offset) } } }
-                LaunchedEffect(page) { if(page!=list.firstVisibleItemIndex) list.scrollToItem(page) }
-                LazyColumn(state=list,modifier=Modifier.fillMaxSize()) { items(volume.pages,key={it}) { i-> PageImage(vm,volume,i,true,Modifier.fillMaxWidth(),{controls=!controls},{},onLoaded={
-                    if(i==initialPage && !ready) scope.launch {
-                        withFrameNanos { };withFrameNanos { }
-                        val size=list.layoutInfo.visibleItemsInfo.firstOrNull { it.index==initialPage }?.size ?: 1
-                        list.scrollToItem(initialPage,(size*initialOffset).toInt());ready=true
-                    }
-                }) } }
+            var metadataFailed by remember(hash,page) {mutableStateOf(false)}
+            var dimensions by remember(hash,page) {mutableStateOf<dev.koma.reader.reader.PageDimensions?>(null)}
+            LaunchedEffect(hash,page,volume.sourceUri) {
+                val result=withContext(Dispatchers.IO) {runCatching {vm.repo.openSource(volume).use {it.dimensions(page)}}}
+                dimensions=result.getOrNull();metadataFailed=result.isFailure
+            }
+            var stripAtEnd by remember(hash,page,settings.mode) {mutableStateOf(false)}
+            val autoStrip=volume.format=="CBZ" && dimensions?.isLong==true && (settings.autoLongPages || settings.fitWidth)
+            if(settings.mode=="vertical" || autoStrip) {
+                StripReader(vm,volume,page,offset,settings.mode=="vertical",{controls=!controls},{delta->if(settings.mode!="vertical")change(page+if(settings.mode=="rtl")-delta else delta)},onEnd={stripAtEnd=it}) {p,o->
+                    page=p;offset=o;vm.position(hash,p,o)
+                }
+            } else if(volume.format=="CBZ" && settings.autoLongPages && dimensions==null && !metadataFailed) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center),color=Accent)
             } else if(settings.fitWidth) {
                 Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                     PageImage(vm,volume,page,true,Modifier.fillMaxWidth(),{controls=!controls},{delta->change(page+if(settings.mode=="rtl")-delta else delta)})
                 }
             } else PageImage(vm,volume,page,false,Modifier.fillMaxSize(),{controls=!controls},{delta->change(page+if(settings.mode=="rtl")-delta else delta)})
-            if(controls && page==volume.pages-1) Surface(Modifier.align(Alignment.BottomCenter).padding(12.dp),shape=RoundedCornerShape(12.dp),color=Surface) { Column(Modifier.padding(8.dp)) {
+            if(controls && ((settings.mode=="vertical" && stripAtEnd) || (page==volume.pages-1 && settings.mode!="vertical" && (!autoStrip || stripAtEnd)))) Surface(Modifier.align(Alignment.BottomCenter).padding(12.dp),shape=RoundedCornerShape(12.dp),color=Surface) { Column(Modifier.padding(8.dp)) {
                 TextButton({vm.complete(volume.hash);finish=true}){Text(stringResource(R.string.finish_volume))}
                 val following=volumes.filter { it.workId==volume.workId && it.order>volume.order }.minByOrNull { it.order }
                 if(following!=null) TextButton({next(following)}){Text(stringResource(R.string.next_volume))}
@@ -129,12 +130,12 @@ import kotlin.math.*
 @Composable private fun PageImage(vm:LibraryViewModel,v:Volume,page:Int,fitWidth:Boolean,modifier:Modifier,toggle:()->Unit,turn:(Int)->Unit,onLoaded:()->Unit={}) {
     var bitmap by remember(v.hash,page) { mutableStateOf<Bitmap?>(null) };var error by remember(v.hash,page) { mutableStateOf(false) };var retry by remember { mutableIntStateOf(0) };var scale by remember(v.hash,page) { mutableFloatStateOf(1f) };var pan by remember(v.hash,page) { mutableStateOf(Offset.Zero) };var width by remember { mutableIntStateOf(1080) }
     val renderWidth=(width*if(scale>1.5f)2 else 1).coerceIn(64,2400)
-    LaunchedEffect(v.hash,page,renderWidth,retry) {
+    LaunchedEffect(v.hash,v.sourceUri,page,renderWidth,retry) {
         error=false
-        try { val b=withContext(Dispatchers.IO) { PageBitmaps.load(vm.repo.file(v.hash),v.format,page,renderWidth) };bitmap=b;onLoaded()
+        try { val b=withContext(Dispatchers.IO) { vm.repo.bitmap(v,page,renderWidth) };bitmap=b;onLoaded()
             if(page+1<v.pages && !fitWidth) withContext(Dispatchers.IO) {
                 ensureActive()
-                runCatching { PageBitmaps.load(vm.repo.file(v.hash),v.format,page+1,renderWidth) }
+                runCatching { vm.repo.bitmap(v,page+1,renderWidth) }
             }
         }
         catch(e:CancellationException){throw e} catch(e:Exception){error=true}
@@ -167,6 +168,6 @@ import kotlin.math.*
 ,contentAlignment=Alignment.Center) {
         bitmap?.let { b->Image(b.asImageBitmap(),desc,Modifier.fillMaxSize().graphicsLayer(scaleX=scale,scaleY=scale,translationX=pan.x,translationY=pan.y),contentScale=ContentScale.Fit) }
         if(bitmap==null && !error) CircularProgressIndicator(color=Accent)
-        if(error) Column(horizontalAlignment=Alignment.CenterHorizontally) { Text(stringResource(R.string.render_error));TextButton({retry++}){Text(stringResource(R.string.retry))} }
+        if(error) Column(horizontalAlignment=Alignment.CenterHorizontally) { Text(stringResource(R.string.render_error));Text(stringResource(R.string.source_missing),color=Muted);TextButton({retry++}){Text(stringResource(R.string.retry))} }
     }
 }

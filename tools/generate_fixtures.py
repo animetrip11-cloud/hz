@@ -41,4 +41,10 @@ xref=len(pdf);pdf+=f'xref\n0 {len(offsets)}\n0000000000 65535 f \n'.encode()
 for n in offsets[1:]:pdf+=f'{n:010d} 00000 n \n'.encode()
 pdf+=f'trailer\n<< /Size {len(offsets)} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n'.encode()
 (root/'Тест Том 1.pdf').write_bytes(pdf)
+# Long webtoon: 600 x 24000, three color bands to verify independent region decoding.
+def long_chunk(kind,data):
+    return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)
+long_rows=b''.join(b'\0'+bytes((242,244,247) if y%600<8 else [(230,90,122),(80,180,130),(70,130,220)][y//8000])*600 for y in range(24000))
+long_png=b'\x89PNG\r\n\x1a\n'+long_chunk(b'IHDR',struct.pack('>IIBBBBB',600,24000,8,2,0,0,0))+long_chunk(b'IDAT',zlib.compress(long_rows))+long_chunk(b'IEND',b'')
+archive(root/'Long-strip.cbz',[('1.png',long_png)])
 (root/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in sorted(root.iterdir()) if p.name!='SHA256SUMS'))

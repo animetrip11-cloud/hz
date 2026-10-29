@@ -1,6 +1,6 @@
 Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
+Daemon will be stopped at the end of the build
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
@@ -51,9 +51,9 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAndroidTestShaders UP-TO-DATE
 > Task :app:compileDebugAndroidTestShaders NO-SOURCE
 > Task :app:generateDebugAndroidTestAssets UP-TO-DATE
-> Task :app:mergeDebugAndroidTestAssets UP-TO-DATE
-> Task :app:compressDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDebugAndroidTestAssets
 > Task :app:desugarDebugAndroidTestFileDependencies UP-TO-DATE
+> Task :app:compressDebugAndroidTestAssets
 > Task :app:checkDebugAndroidTestDuplicateClasses UP-TO-DATE
 > Task :app:mergeExtDexDebugAndroidTest UP-TO-DATE
 > Task :app:mergeLibDexDebugAndroidTest UP-TO-DATE
@@ -73,35 +73,35 @@ Daemon will be stopped at the end of the build
 > Task :app:bundleDebugClassesToRuntimeJar
 > Task :app:generateDebugLintReportModel
 > Task :app:mergeProjectDexDebug
-> Task :app:kspDebugUnitTestKotlin UP-TO-DATE
-> Task :app:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :app:kspDebugUnitTestKotlin
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDebug
+> Task :app:compileDebugUnitTestKotlin
 > Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
-> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:processDebugUnitTestJavaRes
 
 > Task :app:testDebugUnitTest
 Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080
 
-> Task :app:generateDebugAndroidTestLintModel
-> Task :app:generateDebugUnitTestLintModel
-> Task :app:packageDebug
-> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
-> Task :app:assembleDebug
-> Task :app:kspDebugAndroidTestKotlin UP-TO-DATE
-> Task :app:compileDebugAndroidTestKotlin UP-TO-DATE
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugUnitTest
+> Task :app:kspDebugAndroidTestKotlin
+> Task :app:compileDebugAndroidTestKotlin
 > Task :app:compileDebugAndroidTestJavaWithJavac NO-SOURCE
 > Task :app:dexBuilderDebugAndroidTest UP-TO-DATE
 > Task :app:mergeDebugAndroidTestGlobalSynthetics UP-TO-DATE
 > Task :app:processDebugAndroidTestJavaRes UP-TO-DATE
 > Task :app:mergeDebugAndroidTestJavaResource UP-TO-DATE
 > Task :app:mergeProjectDexDebugAndroidTest UP-TO-DATE
-> Task :app:packageDebugAndroidTest UP-TO-DATE
+> Task :app:packageDebugAndroidTest
 > Task :app:createDebugAndroidTestApkListingFileRedirect UP-TO-DATE
-> Task :app:assembleDebugAndroidTest UP-TO-DATE
-> Task :app:lintAnalyzeDebugAndroidTest
-> Task :app:lintAnalyzeDebugUnitTest
-> Task :app:lintAnalyzeDebug
+> Task :app:assembleDebugAndroidTest
 > Task :app:lintReportDebug UP-TO-DATE
 > Task :app:lintDebug
 
-BUILD SUCCESSFUL in 1m 24s
-81 actionable tasks: 15 executed, 66 up-to-date
+BUILD SUCCESSFUL in 1m 39s
+81 actionable tasks: 23 executed, 58 up-to-date

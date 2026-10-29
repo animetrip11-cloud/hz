@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dev.koma.reader.CoreTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-29T11:30:00" hostname="b9aee7d56d20" time="0.066">
+<testsuite name="dev.koma.reader.CoreTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-29T12:33:28" hostname="b9aee7d56d20" time="0.079">
   <properties/>
-  <testcase name="naturalPathsAndServiceEntries" classname="dev.koma.reader.CoreTest" time="0.002"/>
+  <testcase name="naturalPathsAndServiceEntries" classname="dev.koma.reader.CoreTest" time="0.004"/>
   <testcase name="arbitrarilyLargeNumbersAndStableTies" classname="dev.koma.reader.CoreTest" time="0.0"/>
   <testcase name="groupingIsEditableSuggestion" classname="dev.koma.reader.CoreTest" time="0.001"/>
   <testcase name="overrideInheritanceDoesNotOverwriteOtherFields" classname="dev.koma.reader.CoreTest" time="0.001"/>
-  <testcase name="backupRoundTripAndValidation" classname="dev.koma.reader.CoreTest" time="0.061"/>
+  <testcase name="backupRoundTripAndValidation" classname="dev.koma.reader.CoreTest" time="0.073"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

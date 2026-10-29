@@ -45,7 +45,7 @@
     <string name="down">Ниже</string>
     <string name="volume_actions">Действия с томом</string>
     <string name="delete_volume">Удалить том?</string>
-    <string name="delete_volume_body">Удалятся копия тома, прогресс, закладки и запись истории. Исходный файл останется на месте.</string>
+    <string name="delete_volume_body">Удалятся запись тома, прогресс и закладки, а также локальная копия прежней версии, если она есть. Исходный файл останется на месте.</string>
     <string name="missing_file">Добавьте файл</string>
     <string name="pages_count">%1$d стр.</string>
     <string name="position">Страница %1$d / %2$d</string>
@@ -59,15 +59,15 @@
     <string name="import_subtitle">Проверьте тома перед добавлением.</string>
     <string name="files">Файлы</string>
     <string name="storage">Хранение</string>
-    <string name="copy_app">Копировать в приложение</string>
-    <string name="copy_body">Тома останутся доступны офлайн. Исходные файлы сохранятся.</string>
+    <string name="copy_app">Открывать исходный файл</string>
+    <string name="copy_body">Манга не копируется в приложение. Не удаляйте и не перемещайте исходники. Для офлайн-чтения выберите файлы в памяти телефона.</string>
     <string name="add_count">Добавить %1$d том(а)</string>
     <string name="duplicate">Уже в библиотеке</string>
     <string name="open">Открыть</string>
     <string name="new_work">Новое произведение</string>
     <string name="work_name">Название произведения</string>
     <string name="file_name">Название тома</string>
-    <string name="preparing">Проверяем и копируем файлы…</string>
+    <string name="preparing">Проверяем файлы без копирования…</string>
     <string name="import_progress">%1$s · %2$s</string>
     <string name="retry">Повторить</string>
     <string name="cancel_import">Отменить добавление</string>
@@ -112,7 +112,7 @@
     <string name="brightness">Яркость</string>
     <string name="system_brightness">Системная яркость</string>
     <string name="memory">ПАМЯТЬ</string>
-    <string name="app_files">Файлы приложения</string>
+    <string name="app_files">Локальные копии манги</string>
     <string name="cache">Кэш миниатюр</string>
     <string name="clear_cache">Очистить кэш</string>
     <string name="backup">РЕЗЕРВНАЯ КОПИЯ</string>
@@ -123,7 +123,7 @@
     <string name="restore_body">Новые записи будут добавлены. Совпадающие локальные позиции, заметки и настройки сохранятся. Файлов манги в копии нет.</string>
     <string name="about">О приложении</string>
     <string name="about_body">KOMA · Личная офлайн-библиотека PDF и CBZ
-Версия 1.0.0</string>
+Версия 1.1.0</string>
     <string name="as_default">Как по умолчанию</string>
     <string name="individual">Настройки произведения</string>
     <string name="inherited">Наследуется от общих настроек</string>
@@ -162,4 +162,12 @@
     <string name="error_generic">Не удалось выполнить действие. Повторите попытку.</string>
     <string name="error_password">PDF защищён паролем. Выберите незашифрованный PDF.</string>
     <string name="choose_more">Выбрать ещё</string>
+    <string name="auto_long_pages">Длинные CBZ по ширине</string>
+    <string name="link_originals">Убрать копии: выбрать исходники</string>
+    <string name="link_originals_body">Чтобы освободить место после версии 1.0, выберите те же PDF/CBZ и подтвердите добавление. KOMA сверит содержимое, сохранит прогресс и закладки и удалит только свою копию. Исходники останутся на месте.</string>
+    <string name="relink_copy">Переход без копии: прогресс и закладки сохранятся</string>
+    <string name="error_persistent">Нужен постоянный доступ к исходнику. Нажмите «+» и выберите файл в системном окне Android. Для офлайн-чтения скачайте его в память телефона.</string>
+    <string name="error_seekable">Этот поставщик не даёт произвольный доступ к файлу. Выберите исходник из памяти телефона через системное окно Android. Автоматическая копия не создаётся.</string>
+    <string name="tile_description">Страница %1$d, участок %2$d</string>
+    <string name="source_missing">Исходник недоступен. Вернитесь в библиотеку и выберите тот же файл через «+». Прогресс и закладки сохраняются.</string>
 </resources>

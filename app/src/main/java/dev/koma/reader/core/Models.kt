@@ -8,16 +8,16 @@ import java.util.Locale
 @Serializable @Entity(tableName="works")
 data class Work(@PrimaryKey val id: String, val title: String, val status: String = "new", val added: Long = System.currentTimeMillis(), val overrides: String? = null)
 @Serializable @Entity(tableName="volumes")
-data class Volume(@PrimaryKey val hash: String, val workId: String, val title: String, val fileName: String, val format: String, val pages: Int, val bytes: Long, val order: Int, val page: Int = 0, val offset: Float = 0f, val completed: Boolean = false, val available: Boolean = true, val added: Long = System.currentTimeMillis())
+data class Volume(@PrimaryKey val hash: String, val workId: String, val title: String, val fileName: String, val format: String, val pages: Int, val bytes: Long, val order: Int, val page: Int = 0, val offset: Float = 0f, val completed: Boolean = false, val available: Boolean = true, val added: Long = System.currentTimeMillis(), val sourceUri: String? = null)
 @Serializable @Entity(tableName="bookmarks", primaryKeys=["hash", "page"])
 data class Bookmark(val hash: String, val page: Int, val note: String = "", val created: Long = System.currentTimeMillis())
 @Serializable @Entity(tableName="history")
 data class History(@PrimaryKey val hash: String, val opened: Long = System.currentTimeMillis())
 @Serializable
-data class ReadingSettings(val mode: String = "rtl", val fitWidth: Boolean = false, val keepAwake: Boolean = true, val volumeKeys: Boolean = false, val brightness: Float = -1f)
+data class ReadingSettings(val mode: String = "rtl", val fitWidth: Boolean = false, val keepAwake: Boolean = true, val volumeKeys: Boolean = false, val brightness: Float = -1f, val autoLongPages: Boolean = true)
 @Serializable
-data class Overrides(val mode: String? = null, val fitWidth: Boolean? = null, val keepAwake: Boolean? = null, val volumeKeys: Boolean? = null, val brightness: Float? = null) {
-    fun resolve(base: ReadingSettings) = ReadingSettings(mode ?: base.mode, fitWidth ?: base.fitWidth, keepAwake ?: base.keepAwake, volumeKeys ?: base.volumeKeys, brightness ?: base.brightness)
+data class Overrides(val mode: String? = null, val fitWidth: Boolean? = null, val keepAwake: Boolean? = null, val volumeKeys: Boolean? = null, val brightness: Float? = null, val autoLongPages: Boolean? = null) {
+    fun resolve(base: ReadingSettings) = ReadingSettings(mode ?: base.mode, fitWidth ?: base.fitWidth, keepAwake ?: base.keepAwake, volumeKeys ?: base.volumeKeys, brightness ?: base.brightness, autoLongPages ?: base.autoLongPages)
 }
 @Serializable
 data class Preferences(val reading: ReadingSettings = ReadingSettings(), val grid: Boolean = true, val sort: String = "recent", val status: String = "all", val format: String = "all")

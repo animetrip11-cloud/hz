@@ -120,30 +120,6 @@
    lint.unused-resources.exclude-tests =true.
    ,
 
-/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:61: Warning: Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data [UsableSpace]
-                require(known<0 || known < files.usableSpace-8*1024*1024) { "space" }
-                                                 ~~~~~~~~~~~
-/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:70: Warning: Consider also using StorageManager#getAllocatableBytes and allocateBytes which will consider clearable cached data [UsableSpace]
-                            if(count%(4*1024*1024)<65536) require(files.usableSpace>8*1024*1024) { "space" }
-                                                                        ~~~~~~~~~~~
-
-   Explanation for issues of type "UsableSpace":
-   When you need to allocate disk space for large files, consider using the
-   new allocateBytes(FileDescriptor, long) API, which will automatically clear
-   cached files belonging to other apps (as needed) to meet your request.
-
-   When deciding if the device has enough disk space to hold your new data,
-   call getAllocatableBytes(UUID) instead of using getUsableSpace(), since the
-   former will consider any cached data that the system is willing to clear on
-   your behalf.
-
-   Note that these methods require API level 26. If your app is running on
-   older devices, you will probably need to use both APIs, conditionally
-   switching on Build.VERSION.SDK_INT. Lint only looks in the same compilation
-   unit to see if you are already using both APIs, so if it warns even though
-   you are already using the new API, consider moving the calls to the same
-   file or suppressing the warning.
-
 /workspace/hz/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml:1: Warning: The application adaptive icon is missing a monochrome tag [MonochromeLauncherIcon]
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"><background android:drawable="@color/graphite"/><foreground android:drawable="@drawable/ic_launcher_foreground"/></adaptive-icon>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,12 +136,21 @@
    application iconwill not show if your monochrome attribute is not also
    specified in android:roundIcon.
 
-/workspace/hz/app/src/main/java/dev/koma/reader/ui/KomaApp.kt:197: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+/workspace/hz/app/src/main/java/dev/koma/reader/ui/KomaApp.kt:199: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                     c.error!=null->{ Text(stringResource(errorResource(c.error)),color=Accent);TextButton({vm.prepare(listOf(Uri.parse(c.uri)),c.existingWork)}){Text(stringResource(R.string.retry))} }
                                                                                                                              ~~~~~~~~~~~~~~~~
-/workspace/hz/app/src/main/java/dev/koma/reader/reader/PageSource.kt:30: Warning: Use the KTX function createBitmap instead? [UseKtx]
+/workspace/hz/app/src/main/java/dev/koma/reader/reader/PageSource.kt:35: Warning: Use the KTX function createBitmap instead? [UseKtx]
         Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888).also { bitmap ->
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:50: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+        return openUri(Uri.parse(v.sourceUri),v.format)
+                       ~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:59: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+            val uri=Uri.parse(v.sourceUri)
+                    ~~~~~~~~~~~~~~~~~~~~~~
+/workspace/hz/app/src/main/java/dev/koma/reader/data/Repository.kt:115: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+            openUri(Uri.parse(c.uri),c.format).use {require(it.count==c.pages)}
+                    ~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "UseKtx":
    The Android KTX libraries decorates the Android platform SDK as well as
@@ -220,4 +205,4 @@
    </lint>
    ```
 
-0 errors, 28 warnings
+0 errors, 29 warnings

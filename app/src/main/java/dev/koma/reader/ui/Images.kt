@@ -25,7 +25,7 @@ import java.io.File
             runCatching {
                 val cache=File(repo.context.cacheDir,"${volume.hash}-$page.jpg")
                 if(cache.exists()) android.graphics.BitmapFactory.decodeFile(cache.path) else {
-                    val b=PageSource.open(repo.file(volume.hash),volume.format).use { it.render(page,220) }
+                    val b=repo.openSource(volume).use { it.render(page,220) }
                     // Keep the disk cache bounded; only recreatable thumbnails live here.
                     if((repo.context.cacheDir.listFiles()?.sumOf { it.length() } ?: 0)>32L*1024*1024) repo.context.cacheDir.listFiles()?.forEach { it.delete() }
                     cache.outputStream().use { b.compress(Bitmap.CompressFormat.JPEG,82,it) }; b
